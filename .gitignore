@@ -43,3 +43,6 @@ bin/
 
 ### Custom ###
 token.txt
+/shelf/
+/workspace.xml
+/mavenHomeManager.xml

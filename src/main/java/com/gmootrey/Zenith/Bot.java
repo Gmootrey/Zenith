@@ -2,6 +2,7 @@ package com.gmootrey.Zenith;
 
 import com.gmootrey.Zenith.slashcommands.HelpCommand;
 import com.gmootrey.Zenith.slashcommands.InsultCommand;
+import com.gmootrey.Zenith.slashcommands.AddInsultCommand;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -9,17 +10,21 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 
-import java.util.*;
+import java.util.Scanner;
+
 
 public class Bot extends ListenerAdapter {
 
     // TODO: should these be instance variables?
     JDA api;
     CommandListUpdateAction commands;
+
     InsultCommand insultRunner;
     HelpCommand helpRunner;
+    AddInsultCommand addInsultRunner;
 
     private String getToken() {
         try {
@@ -31,35 +36,39 @@ public class Bot extends ListenerAdapter {
         }
     }
 
-    public void setup() {
-        this.api = JDABuilder.createDefault(getToken())
+    private void initCMDS() {
+        api = JDABuilder.createDefault(getToken())
                 .addEventListeners(new Bot())
                 .build();
 
-        this.commands = api.updateCommands();
+        commands = api.updateCommands();
         // Update all runner objects to eventually call their class setup method, then "run" in the listener.
-        this.insultRunner = new InsultCommand(commands);
-        this.helpRunner = new HelpCommand(commands);
+        // TODO: iterate through these?
+        insultRunner = new InsultCommand(commands);
+        helpRunner = new HelpCommand(commands);
+        addInsultRunner = new AddInsultCommand(commands);
 
-        // TODO: not sure if setup and queue should be called every time. Refer to docs and implement better solution.
+        //TODO integrate setup() into constructor
         insultRunner.setup();
         helpRunner.setup();
+        addInsultRunner.setup();
+
 
         commands.queue();
     }
 
     public static void main(String[] args) {
         Bot setupCMD = new Bot();
-        setupCMD.setup();
+        setupCMD.initCMDS();
     }
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         //TODO: setup where commands are accepted (guilds)
         switch (event.getName()) {
-            // TODO: avoid updating instance variables for each case
+            // TODO: avoid updating instance variables for each case... or check if they're making more objects per case
             case "help":
-                this.helpRunner = new HelpCommand(commands);
+                helpRunner = new HelpCommand(commands);
                 helpRunner.run(event);
                 break;
 

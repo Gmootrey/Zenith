@@ -12,16 +12,18 @@ import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.Random;
 
 import static net.dv8tion.jda.api.interactions.commands.OptionType.ATTACHMENT;
 import static net.dv8tion.jda.api.interactions.commands.OptionType.USER;
 
-public class InsultCommand extends ListenerAdapter {
-    private CommandListUpdateAction commands;
-    Scanner sc;
-    public InsultCommand() {
 
-    }
+
+public class InsultCommand {
+    private CommandListUpdateAction commands;
+    Random rand;
+
+
 
     public InsultCommand(CommandListUpdateAction commands) {
         this.commands = commands;
@@ -37,7 +39,6 @@ public class InsultCommand extends ListenerAdapter {
     }
 
     public void run() {
-        //TODO: handle run
 
     }
  }

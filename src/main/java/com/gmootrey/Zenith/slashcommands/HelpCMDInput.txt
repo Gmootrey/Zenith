@@ -1,1 +1,4 @@
-placeholder for now.
+General commands (no required permissions):
+
+/help -> This command.
+/insult [USER] -> Randomly select a predefined insult and mention the given user.
